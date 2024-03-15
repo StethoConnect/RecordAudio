@@ -19,7 +19,7 @@ class StethoConnect:
         print("Recording ......")
 
         frames = []
-        seconds = 12
+        seconds = 16
 
         while len(frames) < int(self.RATE / self.CHUNK * seconds):
             data = stream.read(self.CHUNK)
