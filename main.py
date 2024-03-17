@@ -1,43 +1,46 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_file
 from flask_cors import CORS
 from StethoConnect import StethoConnect
 import asyncio
+import requests
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
+
+FASTAPI_URL = "https://efe9-103-161-144-250.ngrok-free.app"
+HEADERS = {"ngrok-skip-browser-warning": "69420"}
 
 @app.route('/record', methods=['POST'])
 def record():
     async def record_audio():
         steth = StethoConnect()
-        await steth.record_audio()
-        # return send_file("recording.wav",as_attachment=True)
-    
-    # Run the main coroutine
-    asyncio.run(record_audio())
+        await steth.record_audio(seconds=12)
+        # return send_file("recording.wav", as_attachment=True)
 
-    # return send_file("recording.wav",as_attachment=True)
+    asyncio.run(record_audio())
     return "Completed"
 
 @app.route('/predictLungs', methods=['POST'])
 def predictLungs():
-    async def predict_lungs():
-        print("fast api call ")
-        # Perform lungs prediction
-        prediction_data = {"result": "Lungs prediction result"}
-        return jsonify(prediction_data)
-
-    return asyncio.run(predict_lungs())
+    with open("recording.wav", "rb") as f:
+        files = {"audio_file": f}
+        response = requests.post(f"{FASTAPI_URL}/classify_lung_audio", headers=HEADERS, files=files)
+        prediction_data = response.json()
+        print(f"Lung prediction response: {prediction_data}")
+    return jsonify(prediction_data)
 
 @app.route('/predictHeart', methods=['POST'])
 def predictHeart():
-    async def predict_heart():
-        print("fast api call ")
-        # Perform heart prediction
-        prediction_data = {"result": "Heart prediction result"}
-        return jsonify(prediction_data)
+    with open("recording.wav", "rb") as f:
+        files = {"audio_file": f}
+        response = requests.post(f"{FASTAPI_URL}/classify_heart_audio", headers=HEADERS, files=files)
+        prediction_data = response.json()
+        print(f"Heart prediction response: {prediction_data}")
+    return jsonify(prediction_data)
 
-    return asyncio.run(predict_heart())
+@app.route('/download', methods=['GET'])
+def download():
+    return send_file("recording.wav", as_attachment=True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5100, debug=True)

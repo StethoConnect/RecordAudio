@@ -8,7 +8,7 @@ class StethoConnect:
     CHANNELS = 1
     RATE = 16000
 
-    async def record_audio(self):
+    async def record_audio(self, seconds):
         p = pyaudio.PyAudio()
 
         stream = p.open(format=self.FORMAT,
@@ -19,7 +19,7 @@ class StethoConnect:
         print("Recording ......")
 
         frames = []
-        seconds = 16
+
 
         while len(frames) < int(self.RATE / self.CHUNK * seconds):
             data = stream.read(self.CHUNK)
