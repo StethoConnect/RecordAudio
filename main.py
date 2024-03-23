@@ -1,13 +1,14 @@
-from flask import Flask, jsonify, send_file
+from flask import Flask, jsonify, send_file,request
 from flask_cors import CORS
 from StethoConnect import StethoConnect
 import asyncio
-import requests
+import os,requests
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
-
-FASTAPI_URL = "https://efe9-103-161-144-250.ngrok-free.app"
+load_dotenv()
+FASTAPI_URL = "https://3c0f-152-58-219-66.ngrok-free.app"
 HEADERS = {"ngrok-skip-browser-warning": "69420"}
 
 @app.route('/record', methods=['POST'])
