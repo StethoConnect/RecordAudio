@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_file,request
+from flask import Flask, jsonify, send_file,request,request
 from flask_cors import CORS
 from StethoConnect import StethoConnect
 import asyncio
@@ -10,6 +10,25 @@ CORS(app)  # Enable CORS for all routes
 load_dotenv()
 FASTAPI_URL = "https://3c0f-152-58-219-66.ngrok-free.app"
 HEADERS = {"ngrok-skip-browser-warning": "69420"}
+
+
+
+@app.route('/signup',methods = ['POST'])
+def signup():
+    response = requests.post('https://api.chatengine.io/users/',
+    data = {
+        "username":request.get_json()['name'],
+        "secret": request.get_json()['password'],
+        "email":request.get_json()['email'],
+        "first_name":request.get_json()['first_name'],
+        "last_name":request.get_json()['last_name'],
+    },
+    headers={"Private-Key":"911d822a-a99a-4dc8-99f2-dd1094b523b9"}
+    )
+    return response.json()
+
+
+
 
 @app.route('/record', methods=['POST'])
 def record():
