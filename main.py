@@ -11,6 +11,9 @@ app = Flask(__name__)
 cors = CORS(app, resources={
     r"/signup": {"origins": "*"},
     r"/record": {"origins": "*"},
+    r"/predictLungs": {"origins": "*"},
+    r"/predictHeart": {"origins": "*"},
+    r"/download": {"origins": "*"},
 })
 
 # Rest of the code...
