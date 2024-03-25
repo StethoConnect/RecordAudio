@@ -8,7 +8,10 @@ from flask import Flask, jsonify, send_file, request
 from flask_cors import CORS
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins
+cors = CORS(app, resources={
+    r"/signup": {"origins": "*"},
+    r"/record": {"origins": "*"},
+})
 
 # Rest of the code...
 
@@ -26,8 +29,6 @@ def signup():
         "username":request.get_json()['name'],
         "secret": request.get_json()['password'],
         "email":request.get_json()['email'],
-        "first_name":request.get_json()['first_name'],
-        "last_name":request.get_json()['last_name'],
     },
     headers={"Private-Key":"911d822a-a99a-4dc8-99f2-dd1094b523b9"}
     )
