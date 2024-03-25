@@ -8,10 +8,7 @@ from flask import Flask, jsonify, send_file, request
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
-
-app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins
+cors = CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins
 
 # Rest of the code...
 
