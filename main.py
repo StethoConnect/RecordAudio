@@ -4,9 +4,18 @@ from StethoConnect import StethoConnect
 import asyncio
 import os,requests
 from dotenv import load_dotenv
+from flask import Flask, jsonify, send_file, request
+from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
+
+app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins
+
+# Rest of the code...
+
+
 load_dotenv()
 FASTAPI_URL = "https://3c0f-152-58-219-66.ngrok-free.app"
 HEADERS = {"ngrok-skip-browser-warning": "69420"}
