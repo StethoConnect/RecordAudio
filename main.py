@@ -52,14 +52,30 @@ def record():
     asyncio.run(record_audio())
     return "Completed"
 
+# @app.route('/predictLungs', methods=['POST'])
+# def predictLungs():
+#     with open("recording.wav", "rb") as f:
+#         files = {"audio_file": f}
+#         response = requests.post(f"{FASTAPI_URL}/classify_lung_audio", headers=HEADERS, files=files)
+#         prediction_data = response.json()
+#         print(f"Lung prediction response: {prediction_data}")
+#     return jsonify(prediction_data)
+#
+#
+#
+#
 @app.route('/predictLungs', methods=['POST'])
 def predictLungs():
-    with open("recording.wav", "rb") as f:
-        files = {"audio_file": f}
-        response = requests.post(f"{FASTAPI_URL}/classify_lung_audio", headers=HEADERS, files=files)
-        prediction_data = response.json()
-        print(f"Lung prediction response: {prediction_data}")
-    return jsonify(prediction_data)
+    try:
+        with open("recording.wav", "rb") as f:
+            files = {"audio_file": f}
+            response = requests.post(f"{FASTAPI_URL}/classify_lung_audio", headers=HEADERS, files=files)
+            prediction_data = response.json()
+            print(f"Lung prediction response: {prediction_data}")
+        return jsonify(prediction_data)
+    except Exception as e:
+        print(f"Error predicting lungs: {e}")
+        return "Error predicting lungs", 500
 
 @app.route('/predictHeart', methods=['POST'])
 def predictHeart():
