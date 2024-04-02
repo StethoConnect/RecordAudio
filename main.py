@@ -20,7 +20,7 @@ cors = CORS(app, resources={
 
 
 load_dotenv()
-FASTAPI_URL = "https://3c0f-152-58-219-66.ngrok-free.app"
+FASTAPI_URL = "http://192.168.93.32:8000"
 HEADERS = {"ngrok-skip-browser-warning": "69420"}
 
 
