@@ -1,5 +1,6 @@
-import pyaudio
+import subprocess
 import wave
+import pyaudio
 
 
 class StethoConnect:
@@ -8,34 +9,13 @@ class StethoConnect:
     CHANNELS = 1
     RATE = 16000
 
-    async def record_audio(self, seconds):
-        p = pyaudio.PyAudio()
-
-        stream = p.open(format=self.FORMAT,
-                        channels=self.CHANNELS,
-                        rate = self.RATE,
-                        input = True,
-                        frames_per_buffer=self.CHUNK)
-        print("Recording ......")
-
-        frames = []
-
-
-        while len(frames) < int(self.RATE / self.CHUNK * seconds):
-            data = stream.read(self.CHUNK)
-            frames.append(data)
-        print("recording stopped!!")
-
-        stream.stop_stream()
-        stream.close()
-        p.terminate()
+    async def record_audio(self, seconds, device_index=1):
         try:
-            with wave.open("recording.wav", "wb") as wf:
-                wf.setnchannels(self.CHANNELS)
-                wf.setsampwidth(p.get_sample_size(self.FORMAT))
-                wf.setframerate(self.RATE)
-                wf.writeframes(b''.join(frames))
+            output_file = "recording.wav"
+            command = f"arecord -D plughw:{device_index},0 -d {seconds} -f cd -t wav -r {self.RATE} -c {self.CHANNELS} {output_file}"
+            subprocess.run(command, shell=True, check=True)
             print("File recording.wav generated!")
-        except Exception as e:
-            print(f"File generation failed: {e}")
-
+            return output_file
+        except subprocess.CalledProcessError as e:
+            print(f"Error occurred during recording: {e}")
+            return None

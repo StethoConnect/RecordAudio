@@ -39,13 +39,15 @@ def signup():
 
 
 
-
 @app.route('/record', methods=['POST'])
 def record():
     async def record_audio():
         steth = StethoConnect()
-        await steth.record_audio(seconds=12)
-        # return send_file("recording.wav", as_attachment=True)
+        output_file = await steth.record_audio(seconds=12)
+        if output_file:
+            return send_file(output_file, as_attachment=True)
+        else:
+            return "Error occurred during recording", 500
 
     asyncio.run(record_audio())
     return "Completed"
