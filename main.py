@@ -1,3 +1,4 @@
+import subprocess
 from flask import Flask, jsonify, send_file,request,request
 from flask_cors import CORS
 from StethoConnect import StethoConnect
@@ -22,6 +23,47 @@ cors = CORS(app, resources={
 load_dotenv()
 FASTAPI_URL = "http://192.168.93.32:8000"
 HEADERS = {"ngrok-skip-browser-warning": "69420"}
+
+
+
+# Global variable to store loopback module ID
+loopback_module_id = None
+
+# Start loopback
+def start_loopback():
+    global loopback_module_id
+    result = subprocess.run(['pactl', 'load-module', 'module-loopback', 'latency_msec=1', 'source=1', 'sink=0'], capture_output=True)
+    output = result.stdout.decode().strip()
+    if output.isdigit():
+        loopback_module_id = int(output)
+        return True
+    else:
+        return False
+
+# Stop loopback
+def stop_loopback():
+    global loopback_module_id
+    if loopback_module_id is not None:
+        subprocess.run(['pactl', 'unload-module', str(loopback_module_id)])
+        loopback_module_id = None
+        return True
+    else:
+        return False
+
+@app.route('/start_loopback', methods=['GET'])
+def start_loopback_route():
+    if start_loopback():
+        return "Loopback started successfully"
+    else:
+        return "Failed to start loopback", 500
+
+@app.route('/stop_loopback', methods=['GET'])
+def stop_loopback_route():
+    if stop_loopback():
+        return "Loopback stopped successfully"
+    else:
+        return "Loopback is not running", 500
+
 
 
 
