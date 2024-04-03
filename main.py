@@ -77,7 +77,7 @@ def signup():
         "secret": request.get_json()['password'],
         "email":request.get_json()['email'],
     },
-    headers={"Private-Key":"911d822a-a99a-4dc8-99f2-dd1094b523b9"}
+    headers={"Private-Key":"11d859e0-ce57-4821-8a73-e07fe758f252"}
     )
     return response.json()
 
