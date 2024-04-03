@@ -127,8 +127,9 @@ def predictLungs():
 @app.route('/predictHeart', methods=['POST'])
 def predictHeart():
     print('hello')
-    patient_id = request.get_json()["patient_id"]
-    token = request.get_json()["idToken"]
+    data = request.get_json()
+    patient_id = data.get("patient_id")
+    token = data.get("idToken")
     HEADERS = {"id-token": token}
 
     with open("recording.wav", "rb") as f:
