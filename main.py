@@ -131,7 +131,9 @@ def predictHeart():
     patient_id = data.get("patient_id")
     token = data.get("idToken")
     HEADERS = {"id-token": token}
-
+    print("hi")
+    print(HEADERS)
+    print("data:",data)
     with open("recording.wav", "rb") as f:
         files = {"audio_file": f}
         response = requests.post(f"{FASTAPI_URL}/classify_heart_audio?patient_id={patient_id}", headers=HEADERS, files=files)
