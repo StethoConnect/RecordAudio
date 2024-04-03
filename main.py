@@ -22,7 +22,7 @@ cors = CORS(app, resources={
 
 load_dotenv()
 FASTAPI_URL = "http://192.168.93.32:8000"
-HEADERS = {"ngrok-skip-browser-warning": "69420"}
+
 
 
 
@@ -121,9 +121,13 @@ def predictLungs():
 
 @app.route('/predictHeart', methods=['POST'])
 def predictHeart():
+    patient_id = request.get_json()["patientId"]
+    token = request.get_json()["idToken"]
+    HEADERS = {"accept": "application/json", "id-token": token}
+
     with open("recording.wav", "rb") as f:
         files = {"audio_file": f}
-        response = requests.post(f"{FASTAPI_URL}/classify_heart_audio", headers=HEADERS, files=files)
+        response = requests.post(f"{FASTAPI_URL}/classify_heart_audio?patient_id={patient_id}", headers=HEADERS, files=files)
         prediction_data = response.json()
         print(f"Heart prediction response: {prediction_data}")
     return jsonify(prediction_data)
