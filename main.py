@@ -108,22 +108,27 @@ def record():
 #
 #
 #
-@app.route('/predictLungs', methods=['POST'])
-def predictLungs():
-    try:
-        data = request.get_json()
-        patient_id = data.get("patient_id")
-        token = data.get("idToken")
-        HEADERS = {"id-token": token}
-        with open("recording.wav", "rb") as f:
-            files = {"audio_file": f}
-            response = requests.post(f"{FASTAPI_URL}/classify_lung_audio?patient_id={patient_id}", headers=HEADERS, files=files)
-            prediction_data = response.json()
-            print(f"Lung prediction response: {prediction_data}")
-        return jsonify(prediction_data)
-    except Exception as e:
-        print(f"Error predicting lungs: {e}")
-        return "Error predicting lungs", 500
+# @app.route('/predictLungs', methods=['POST'])
+# def predictLungs():
+#     try:
+#         data = request.get_json()
+#         patient_id = data.get("patient_id")
+#         token = data.get("idToken")
+#         HEADERS = {"id-token": token}
+#         with open("recording.wav", "rb") as f:
+#             files = {"audio_file": f}
+#             response = requests.post(f"{FASTAPI_URL}/classify_lung_audio?patient_id={patient_id}", headers=HEADERS, files=files)
+#             prediction_data = response.json()
+#             print(f"Lung prediction response: {prediction_data}")
+#         return jsonify(prediction_data)
+#     except Exception as e:
+#         print(f"Error predicting lungs: {e}")
+#         return jsonify({"error": str(e)}), 500
+
+
+
+
+
 
 @app.route('/predictHeart', methods=['POST'])
 def predictHeart():
@@ -137,6 +142,25 @@ def predictHeart():
         prediction_data = response.json()
         print(f"Heart prediction response: {prediction_data}")
     return jsonify(prediction_data)
+
+
+@app.route('/predictLungs', methods=['POST'])
+def predictHeart():
+    data = request.get_json()
+    patient_id = data.get("patient_id")
+    token = data.get("idToken")
+    HEADERS = {"id-token": token}
+    with open("recording.wav", "rb") as f:
+        files = {"audio_file": f}
+        response = requests.post(f"{FASTAPI_URL}/classify_lung_audio?patient_id={patient_id}", headers=HEADERS, files=files)
+        prediction_data = response.json()
+        print(f"Heart prediction response: {prediction_data}")
+    return jsonify(prediction_data)
+
+
+
+
+
 
 @app.route('/download', methods=['GET'])
 def download():
