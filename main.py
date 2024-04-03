@@ -111,9 +111,10 @@ def record():
 @app.route('/predictLungs', methods=['POST'])
 def predictLungs():
     try:
-        patient_id = request.get_json()["patient_id"]
-        token = request.get_json()["idToken"]
-        HEADERS = {"accept": "application/json", "id-token": token}
+        data = request.get_json()
+        patient_id = data.get("patient_id")
+        token = data.get("idToken")
+        HEADERS = {"id-token": token}
         with open("recording.wav", "rb") as f:
             files = {"audio_file": f}
             response = requests.post(f"{FASTAPI_URL}/classify_lung_audio?patient_id={patient_id}", headers=HEADERS, files=files)
