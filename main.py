@@ -19,9 +19,10 @@ cors = CORS(app, resources={
 
 # Rest of the code...
 
-
 load_dotenv()
-FASTAPI_URL = "http://192.168.93.32:8000"
+FASTAPI_URL = "http://192.168.93.32:5321"
+tokenid = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImJhNjI1OTZmNTJmNTJlZDQ0MDQ5Mzk2YmU3ZGYzNGQyYzY0ZjQ1M2UiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQXNoaXNoIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3N0ZXRob2Nvbm5lY3QtYTFlYjIiLCJhdWQiOiJzdGV0aG9jb25uZWN0LWExZWIyIiwiYXV0aF90aW1lIjoxNzEyMTM4ODE0LCJ1c2VyX2lkIjoidlgzWjVHRjFGb09kU2lldFVHVmI2dzFJNkRSMiIsInN1YiI6InZYM1o1R0YxRm9PZFNpZXRVR1ZiNncxSTZEUjIiLCJpYXQiOjE3MTIxMzg4MTQsImV4cCI6MTcxMjE0MjQxNCwiZW1haWwiOiJzYW1wbGVAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInNhbXBsZUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.oNA6HPbjdSbXK9yDKnvJea-sHKTlb90-HIENd2Ah9sqpHQXr7Ex10sHrvwfMBs2_YSjv1S6NTTuhxoLk0iS0SapRCUDgvgsWgJDzPCGEkENowMD34O4cBXOV80hnvoXw6WC3XnaAQjBVlQZZrcOzQN37z62_rPww4eL_-Z74RI6dr-pFLGCS9UTunKndeekTu01T3BgqVT0D_QhH5HvwSGfJV0G_D04bTGvKWFSt4Bgh7_atvEvIKhLmhNqXUqE87Aa_NTmrjQ2CG5jsD5iS9CVxpCcYesCmPOSULXLxbA8mUvDtm60Lx8TvwjzUCB7hyfdeBRZNchK79AWRPdm9Rw"
+patientid = "-NuYB608QUuXuft1Pscg"
 
 
 
@@ -121,13 +122,15 @@ def predictLungs():
 
 @app.route('/predictHeart', methods=['POST'])
 def predictHeart():
+    global patientid
+    global tokenid
     patient_id = request.get_json()["patientId"]
     token = request.get_json()["idToken"]
-    HEADERS = {"accept": "application/json", "id-token": token}
+    HEADERS = {"accept": "application/json", "id-token": tokenid}
 
     with open("recording.wav", "rb") as f:
         files = {"audio_file": f}
-        response = requests.post(f"{FASTAPI_URL}/classify_heart_audio?patient_id={patient_id}", headers=HEADERS, files=files)
+        response = requests.post(f"{FASTAPI_URL}/classify_heart_audio?patient_id={patientid}", headers=HEADERS, files=files)
         prediction_data = response.json()
         print(f"Heart prediction response: {prediction_data}")
     return jsonify(prediction_data)
