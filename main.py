@@ -124,8 +124,8 @@ def predictLungs():
 def predictHeart():
     global patientid
     global tokenid
-    patient_id = request.get_json()["patientId"]
-    token = request.get_json()["idToken"]
+    # patient_id = request.get_json()["patientId"]
+    # token = request.get_json()["idToken"]
     HEADERS = {"accept": "application/json", "id-token": tokenid}
 
     with open("recording.wav", "rb") as f:
