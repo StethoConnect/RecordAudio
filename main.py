@@ -145,7 +145,7 @@ def predictHeart():
 
 
 @app.route('/predictLungs', methods=['POST'])
-def predictHeart():
+def predictLungs():
     data = request.get_json()
     patient_id = data.get("patient_id")
     token = data.get("idToken")
