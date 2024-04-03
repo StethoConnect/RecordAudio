@@ -9,14 +9,17 @@ from flask import Flask, jsonify, send_file, request
 from flask_cors import CORS
 
 app = Flask(__name__)
-cors = CORS(app, resources={
-    r"/signup": {"origins": "*"},
-    r"/record": {"origins": "*"},
-    r"/predictLungs": {"origins": "*"},
-    r"/predictHeart": {"origins": "*"},
-    r"/download": {"origins": "*"},
-})
+# cors = CORS(app, resources={
+#     r"/signup": {"origins": "*"},
+#     r"/record": {"origins": "*"},
+#     r"/predictLungs": {"origins": "*"},
+#     r"/predictHeart": {"origins": "*"},
+#     r"/download": {"origins": "*"},
+# })
 
+
+
+CORS(app)
 # Rest of the code...
 
 load_dotenv()
