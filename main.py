@@ -23,7 +23,7 @@ cors = CORS(app, resources={
 # Rest of the code...
 
 load_dotenv()
-FASTAPI_URL = "http://192.168.93.32:5321"
+FASTAPI_URL = "http://192.168.0.114:5321"
 
 
 
