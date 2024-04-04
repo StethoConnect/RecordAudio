@@ -14,6 +14,8 @@ cors = CORS(app, resources={
     r"/record": {"origins": "*"},
     r"/predictLungs": {"origins": "*"},
     r"/predictHeart": {"origins": "*"},
+    r"/start_loopback": {"origins": "*"},
+    r"/stop_loobback": {"origins": "*"},
     r"/download": {"origins": "*"},
 })
 
