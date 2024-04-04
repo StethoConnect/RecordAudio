@@ -161,6 +161,9 @@ def predictLungs():
         response = requests.post(f"{FASTAPI_URL}/classify_lung_audio?patient_id={patient_id}", headers=HEADERS, files=files)
         prediction_data = response.json()
         print(f"Heart prediction response: {prediction_data}")
+        response2 = requests.post(f"{FASTAPI_URL}/upload-audio/{patient_id}", headers=HEADERS, files=files)
+        upload = response2.json()
+        print(f"upload data:{upload}")
     return jsonify(prediction_data)
 
 
